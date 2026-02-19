@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: skills_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: skills_platform
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: skills_user
+      MYSQL_PASSWORD: skills_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - skills_network
+
+  # PHPMyAdmin (optional, for development)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: skills_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    ports:
+      - "8080:80"
+    networks:
+      - skills_network
+    depends_on:
+      - mysql
+
+  # Laravel Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: skills_backend
+    restart: unless-stopped
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: skills_platform
+      DB_USERNAME: skills_user
+      DB_PASSWORD: skills_password
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage:/var/www/html/storage
+    ports:
+      - "8000:9000"
+    networks:
+      - skills_network
+    depends_on:
+      - mysql
+
+  # Nginx for Backend
+  nginx_backend:
+    image: nginx:alpine
+    container_name: skills_nginx_backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    networks:
+      - skills_network
+    depends_on:
+      - backend
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: skills_frontend
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost/api
+    ports:
+      - "3000:3000"
+    networks:
+      - skills_network
+    depends_on:
+      - backend
+
+networks:
+  skills_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
