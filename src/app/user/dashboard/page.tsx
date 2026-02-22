@@ -1,7 +1,7 @@
 'use client';
 
-import { useAuth } from '@/lib/hooks/useAuth';
-import { useGet } from '@/lib/hooks/useApi';
+import { useAuth } from '../../../lib/hooks/useAuth';
+import { useGet } from '../../../lib/hooks/useApi';
 import {
   ShieldCheckIcon,
   DocumentCheckIcon,
@@ -9,7 +9,7 @@ import {
   EyeIcon,
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 
 interface PortfolioItem {
   id: number;
