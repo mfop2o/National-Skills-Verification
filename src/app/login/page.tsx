@@ -11,7 +11,7 @@ import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
 const loginSchema = z.object({
-  login: z.string().min(1, 'Email or phone is required'),
+  email: z.string().min(1, 'Email or phone is required'),
   password: z.string().min(1, 'Password is required'),
 });
 
@@ -30,10 +30,10 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (formData: LoginForm) => {
     try {
       setIsLoading(true);
-      await login(data);
+      await login(formData);
     } catch (error) {
       console.error('Login error:', error);
     } finally {
@@ -66,14 +66,14 @@ export default function LoginPage() {
                 Email or Phone Number
               </label>
               <input
-                {...register('login')}
-                id="login"
+                {...register('email')}
+                id="email"
                 type="text"
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Enter your email or phone"
               />
-              {errors.login && (
-                <p className="mt-1 text-sm text-red-600">{errors.login.message}</p>
+              {errors.email && (
+                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
               )}
             </div>
 

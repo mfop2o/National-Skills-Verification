@@ -3,7 +3,7 @@
 import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/lib/hooks/useAuth';
+import { useAuth } from '../../lib/hooks/useAuth';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   Bars3Icon,

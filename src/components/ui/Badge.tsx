@@ -35,7 +35,7 @@ export function Badge({ children, variant = 'default', size = 'md' }: BadgeProps
 
 // Status Badge specific
 export function StatusBadge({ status }: { status: string }) {
-  const config: Record<string, { variant: 'success' | 'warning' | 'error' | 'info'; label: string }> = {
+  const config: Record<string, { variant: 'default'|'success' | 'warning' | 'error' | 'info'; label: string }> = {
     verified: { variant: 'success', label: 'Verified' },
     approved: { variant: 'success', label: 'Approved' },
     pending: { variant: 'warning', label: 'Pending' },
