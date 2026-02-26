@@ -1,4 +1,4 @@
-'use client';
+
 
 import { useAuth } from '../../../lib/hooks/useAuth';
 import Link from 'next/link';
